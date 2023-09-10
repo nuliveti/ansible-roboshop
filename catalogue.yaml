@@ -64,7 +64,7 @@
       state: installed
 
   - name: install the dependencies.
-    ansible.builtin.command: "mongo --host mongodb.kirandevops.online </app/schema/catalogue.js"
+    ansible.builtin.command: "mongo --host mongodb.kirandevops.online < /app/schema/catalogue.js"
   
   - name: Restart catalogue service
     ansible.builtin.service:
