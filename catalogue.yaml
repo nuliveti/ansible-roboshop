@@ -22,7 +22,7 @@
   - name:  setup an app directory
     ansible.builtin.stat:
       path: /app
-      register: directory
+    register: directory
   - name: print the directory stats
     ansible.builtin.debug:
       msg: "out put is : {{directory}}"
