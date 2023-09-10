@@ -20,8 +20,6 @@
     ansible.builtin.file:
     path: /usr/share/nginx/html/
     state: directory
-
-
   - name: Download the frontend content
     ansible.builtin.get_url:
       url: https://roboshop-builds.s3.amazonaws.com/web.zip
