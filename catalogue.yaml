@@ -13,7 +13,7 @@
     ansible.builtin.command: id roboshop
     register: out #output is variable name 
     ignore_errors: true
-  - when: output.rc != 0
+  - when: out.rc != 0
     name: create user roboshop
     become: yes #we need sudo access for this task only
     ansible.builtin.user:
@@ -22,11 +22,11 @@
   - name:  setup an app directory
     ansible.builtin.stat:
       path: /app
-    register: directory
-  - name : print the directory stats
+      register: directory
+  - name: print the directory stats
     ansible.builtin.debug:
       msg: "out put is : {{directory}}"
-  - when: directory.stat.exists == 'false'
+  - when: directory.stat.exists == 'False'
     name: create/app directory
     ansible.builtin.file:
       path: /app
