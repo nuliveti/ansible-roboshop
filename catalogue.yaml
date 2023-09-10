@@ -1,0 +1,31 @@
+- name : install catalogue microservice
+  hosts: catalogue
+  become: yes
+  tasks:
+  - name: Setup NodeJS repos.
+    ansible.builtin.shell: "curl -sL https://rpm.nodesource.com/setup_lts.x | bash"
+  - name: install nodejs
+    ansible.builtin.yum:
+      name: nodejs
+    state: installed
+  - name: check roboshop exist or not
+    #when ever we want to run linux commands directly i.e in the case of module not available in ansible
+    ansible.builtin.command: id roboshop
+    register: out #output is variable name 
+    ignore_errors: true
+  - when: output.rc != 0
+    name: create user roboshop
+    become: yes #we need sudo access for this task only
+    ansible.builtin.user:
+      name: roboshop
+  - name:  setup an app directory
+    ansible.builtin.stat:
+    path: /app
+    register: directory
+  - name : print the directory stats
+    ansible.builtin.debug:
+      msg: "out put is : {{directory}}"
+   
+  
+
+    
