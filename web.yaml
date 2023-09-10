@@ -36,5 +36,6 @@
       dest: /etc/nginx/default.d/roboshop.conf 
   - name: Restart web service
     ansible.builtin.service:
-      name: web
+      name: nginx
       state: restarted
+      enabled: yes
