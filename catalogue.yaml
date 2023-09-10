@@ -6,7 +6,7 @@
     ansible.builtin.shell: "curl -sL https://rpm.nodesource.com/setup_lts.x | bash"
   - name: install nodejs
     ansible.builtin.yum:
-      name: nodejs
+    name: nodejs
     state: installed
   - name: check roboshop exist or not
     #when ever we want to run linux commands directly i.e in the case of module not available in ansible
