@@ -18,6 +18,7 @@
     become: yes #we need sudo access for this task only
     ansible.builtin.user:
       name: roboshop
+
   - name:  setup an app directory
     ansible.builtin.stat:
       path: /app
@@ -25,6 +26,11 @@
   - name : print the directory stats
     ansible.builtin.debug:
       msg: "out put is : {{directory}}"
+  - when: directory.stat.exists == 'false'
+    name: create/app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
    
   
 
