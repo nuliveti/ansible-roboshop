@@ -33,7 +33,7 @@
       state: directory
   - name: download catalogue artifacts
     ansible.builtin.get_url:
-      url: https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
       dest: /tmp
   - name: unzip catalogue.zip
     ansible.builtin.unarchive:
@@ -49,7 +49,7 @@
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
       
-  - name: daemon-reload
+  - name: daemon reload
     ansible.builtin.systemd:
       daemon_reload: true
 
