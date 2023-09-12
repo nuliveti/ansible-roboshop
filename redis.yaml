@@ -6,6 +6,10 @@
     ansible.builtin.yum:
       name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
       state: installed
+      disable_gpg_check: true
+
+      ### FAILED! => {"changed": false, "msg": "Failed to validate GPG signature for remi-release-8.8-1.el8.remi.noarch: Public key for remi-release-8zujc8d3u.rpm is not installed"}
+      ### above error occurs when ever we install packfew components from remote mechine not from live mechineage from remote 
   - name: Enable Redis 6.2
     ansible.builtin.command: yum module enable redis:remi-6.2 -y
   - name: Install Redis
