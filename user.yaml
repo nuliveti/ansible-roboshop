@@ -1,0 +1,79 @@
+- name : install user microservice
+  hosts: user
+  become: yes
+  tasks:
+  - name: Setup NodeJS repos.
+    ansible.builtin.shell: "curl -sL https://rpm.nodesource.com/setup_lts.x | bash"
+  - name: install nodejs
+    ansible.builtin.yum:
+      name: nodejs
+      state: installed
+  - name: check roboshop exist or not
+    #when ever we want to run linux commands directly i.e in the case of module not available in ansible
+    ansible.builtin.command: id roboshop
+    register: out #output is variable name 
+    ignore_errors: true
+  - when: out.rc != 0
+    name: create user roboshop
+    become: yes #we need sudo access for this task only
+    ansible.builtin.user:
+      name: roboshop
+
+  - name:  setup an app directory
+    ansible.builtin.stat:
+      path: /app
+    register: directory
+  - name: print the directory stats
+    ansible.builtin.debug:
+      msg: "out put is : {{directory}}"
+  - when: directory.stat.exists == False
+    name: create/app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+  - name: download user artifacts
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      dest: /tmp
+  - name: unzip user.zip
+    ansible.builtin.unarchive:
+      src: /tmp/user.zip
+      dest: /app
+      remote_src: yes
+  - name: install the dependencies.
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+  - name: Copy user servicce
+    ansible.builtin.copy:
+      src: user.service
+      dest: /etc/systemd/system/user.service
+      
+  - name: daemon reload
+    ansible.builtin.systemd:
+      daemon_reload: true
+
+  - name: Copy mongo repo to yum.repos.d
+    ansible.builtin.copy:
+      src: mongodb.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb-org-shell
+    ansible.builtin.yum:
+      name: mongodb-org-shell
+      state: installed
+
+  - name: install the dependencies.
+    ansible.builtin.command: "mongo --host mongodb.kirandevops.online < /app/schema/user.js"
+  
+  - name: Restart user service
+    ansible.builtin.service:
+      name: user
+      state: restarted
+      enabled: true
+ 
+    
+    
+  
+
+    
