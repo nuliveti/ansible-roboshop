@@ -33,7 +33,7 @@
   
   - name: download shipping and unzip shipping.zip
     ansible.builtin.unarchive:
-      src: shipping.zip
+      src: https://roboshop-builds.s3.amazonaws.com/shipping.zip
       dest: /app
       remote_src: yes
   - name: maven package clean
@@ -53,19 +53,15 @@
     ansible.builtin.systemd:
       daemon_reload: true
 
-  - name: Restart shipping service
-    ansible.builtin.service:
-      name: shipping
-      state: restarted
-      enabled: true
+
   - name: install MYSQL client 
     ansible.builtin.yum:
       name: MYSQL
       state: installed
  
 
-  - name: load sschema
-    ansible.builtin.command: mysql -h mysql.kirandevops.online -uroot -pRoboShop@1 < /app/schema/shipping.sql 
+  - name: load schema
+    ansible.builtin.shell: mysql -h mysql.kirandevops.online -uroot -pRoboShop@1 < /app/schema/shipping.sql 
   
   - name: Restart shipping service
     ansible.builtin.service:
