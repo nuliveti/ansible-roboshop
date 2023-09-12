@@ -25,3 +25,6 @@ shipping.kirandevops.online
 [rabbitmq]
 rabbitmq.kirandevops.online
 
+[payment]
+payment.kirandevops.online
+
