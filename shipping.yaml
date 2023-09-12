@@ -56,7 +56,7 @@
 
   - name: install MYSQL client 
     ansible.builtin.yum:
-      name: MYSQL
+      name: yum install mysql -y 
       state: installed
  
 
